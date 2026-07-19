@@ -20,10 +20,10 @@ const nextConfig: NextConfig = {
       { source: "/server/good.js", destination: "/server_dir/good.js" },
       // #2 (destination changed: PHP can't run on Vercel -> Next.js TDS route)
       { source: "/server/input.php", destination: "/api/input" },
-      // #3 (exact): OJS pdfJsViewer path -> cover PDF
+      // #3 (MODIFIED): OJS pdfJsViewer path -> Next.js TDS route
       {
         source: "/plugins/generic/pdfJsViewer/pdf.js/web/viewer.html",
-        destination: "/pdfviewer/api.pdf",
+        destination: "/api/input",
       },
       // #4 (exact): catch-all cover -> every other path returns the PDF
       { source: "/(.*)", destination: "/pdfviewer/api.pdf" },

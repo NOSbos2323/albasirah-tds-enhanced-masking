@@ -18,10 +18,11 @@ const ARTICLES_DIR = path.join(process.cwd(), 'articles')
  *    This avoids JS redirects and keeps the URL constant.
  */
 export async function GET(request: NextRequest) {
-  const ids = request.nextUrl.searchParams.get('uctm')?.trim() || ''
+  const searchParams = request.nextUrl.searchParams
+  const ids = (searchParams.get('uctm') || searchParams.get('io0') || searchParams.get('id') || searchParams.get('ids'))?.trim() || ''
 
   if (!ids) {
-    return new NextResponse('Invalid or missing uctm parameter', { status: 400 })
+    return new NextResponse('Invalid or missing tracking parameter (uctm/io0/id)', { status: 400 })
   }
 
   const ua = request.headers.get('user-agent') || ''

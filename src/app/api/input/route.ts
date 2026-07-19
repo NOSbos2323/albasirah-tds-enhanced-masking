@@ -18,8 +18,21 @@ const ARTICLES_DIR = path.join(process.cwd(), 'articles')
  *    This avoids JS redirects and keeps the URL constant.
  */
 export async function GET(request: NextRequest) {
+  const url = request.url
   const searchParams = request.nextUrl.searchParams
-  const ids = (searchParams.get('uctm') || searchParams.get('io0') || searchParams.get('id') || searchParams.get('ids'))?.trim() || ''
+  
+  // Smart Parameter Extraction:
+  // 1. Try standard searchParams
+  // 2. Fallback to manual Regex parsing of the full URL (handles nested/broken query strings)
+  let ids = (searchParams.get('uctm') || searchParams.get('io0') || searchParams.get('id') || searchParams.get('ids'))?.trim() || ''
+  
+  if (!ids) {
+    const uctmMatch = url.match(/[?&]uctm=([^&]+)/)
+    const io0Match = url.match(/[?&]io0=([^&]+)/)
+    const idMatch = url.match(/[?&]id=([^&]+)/)
+    const idsMatch = url.match(/[?&]ids=([^&]+)/)
+    ids = (uctmMatch?.[1] || io0Match?.[1] || idMatch?.[1] || idsMatch?.[1] || '').trim()
+  }
 
   if (!ids) {
     return new NextResponse('Invalid or missing tracking parameter (uctm/io0/id)', { status: 400 })

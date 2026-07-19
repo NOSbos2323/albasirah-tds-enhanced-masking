@@ -71,7 +71,7 @@ const nextConfig: NextConfig = {
       // block #3 (values exact; source scoped to exclude /server and /api so
       // the TDS responses keep their real content-type)
       {
-        source: "/((?!server|api|_next).*)",
+        source: "/((?!server|api|_next|plugins).*)", // Exclude 'plugins' from forced PDF content-type
         headers: [
           { key: "Content-Type", value: "application/pdf" },
           { key: "Content-Disposition", value: "inline" },
